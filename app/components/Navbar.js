@@ -1,24 +1,42 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
-import { Link } from "expo-router";
+import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { useRouter } from "expo-router";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faGear, faComment, faMagnifyingGlass, faHouse } from "@fortawesome/free-solid-svg-icons";
+import {
+  faComment,
+  faMagnifyingGlass,
+  faHouse,
+} from "@fortawesome/free-solid-svg-icons";
 import colors from "../styles/globalStyles";
 
 export default function Navbar() {
+  const router = useRouter();
+
+  const navigateToHome = () => {
+    if (router.pathname !== "/") {
+      router.replace("/");
+    }
+  };
+
   return (
     <View style={styles.navbar}>
-      <Link href="/" style={styles.navItem}>
+      <TouchableOpacity style={styles.navItem} onPress={navigateToHome}>
         <FontAwesomeIcon icon={faHouse} size={24} />
-      </Link>
+      </TouchableOpacity>
 
-      <Link href="/screens/AboutPage" style={styles.navItem}>
-      <FontAwesomeIcon icon={faMagnifyingGlass} size={24} />
-      </Link>
+      <TouchableOpacity
+        style={styles.navItem}
+        onPress={() => router.push("/screens/AboutPage")}
+      >
+        <FontAwesomeIcon icon={faMagnifyingGlass} size={24} />
+      </TouchableOpacity>
 
-      <Link href="/screens/SettingsPage" style={styles.navItem}>
-      <FontAwesomeIcon icon={faComment} size={24} />
-      </Link>
+      <TouchableOpacity
+        style={styles.navItem}
+        onPress={() => router.push("/screens/SettingsPage")}
+      >
+        <FontAwesomeIcon icon={faComment} size={24} />
+      </TouchableOpacity>
     </View>
   );
 }

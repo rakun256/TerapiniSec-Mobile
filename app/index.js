@@ -1,8 +1,17 @@
+import React, { useRef, useEffect } from "react";
 import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import colors from "./styles/globalStyles";
 import { Link } from "expo-router";
 
 export default function HomePage() {
+  const scrollViewRef = useRef(null);
+
+  useEffect(() => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({ y: 0, animated: false });
+    }
+  }, []);
+
   const tasks = [
     { id: "1", icon: "😀", text: "Complete your daily mood check-in" },
     { id: "2", icon: "📖", text: "Read about the benefits of journaling" },
@@ -11,8 +20,10 @@ export default function HomePage() {
   ];
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
-      {/* Görsel ve Karşılama Mesajı */}
+    <ScrollView
+      ref={scrollViewRef}
+      contentContainerStyle={styles.scrollContainer}
+    >
       <View style={styles.imageContainer}>
         <Image
           style={styles.image}
@@ -21,14 +32,15 @@ export default function HomePage() {
         />
         <View style={styles.overlay}>
           <View style={styles.overlayTexts}>
-            <Text style={styles.greetingText}>Good morning, how are you feeling?</Text>
-            <Text style={styles.subText}>We have a few tasks for you today.</Text>
+            <Text style={styles.greetingText}>
+              Good morning, how are you feeling?
+            </Text>
+            <Text style={styles.subText}>
+              We have a few tasks for you today.
+            </Text>
           </View>
         </View>
       </View>
-
-
-      {/* Görev Listesi */}
       <View style={styles.taskSection}>
         <Text style={styles.taskHeader}>Today's Tasks</Text>
         {tasks.map((task) => (
@@ -38,11 +50,9 @@ export default function HomePage() {
           </View>
         ))}
       </View>
-
-      {/* Günlük Mood Yönlendiricisi */}
       <View style={styles.moodTrackerSection}>
-        <Text style={styles.moodTrackerHeader}>Track Your Mood  📝</Text>
-        <Link  href="/mood-tracker" style={styles.moodTrackerButton}>
+        <Text style={styles.moodTrackerHeader}>Track Your Mood 📝</Text>
+        <Link href="/mood-tracker" style={styles.moodTrackerButton}>
           <Text style={styles.moodTrackerButtonText}>Go to Mood Tracker</Text>
         </Link>
       </View>
@@ -52,37 +62,37 @@ export default function HomePage() {
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    flexGrow: 1, 
+    flexGrow: 1,
   },
   imageContainer: {
-    position: "relative", 
+    position: "relative",
     width: "100%",
-    height: 500, 
-    overflow: "hidden", 
+    height: 500,
+    overflow: "hidden",
   },
   image: {
     width: "100%",
     height: "100%",
   },
   overlay: {
-    position: "absolute", // Overlay'in görsel üzerine çıkmasını sağlar
+    position: "absolute",
     top: 0,
     left: 0,
     width: "100%",
     height: "100%",
-    backgroundColor: "rgba(0, 0, 0, 0.4)", // Görsel üzerine yarı şeffaf bir arka plan
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
   },
   overlayTexts: {
     position: "absolute",
     textAlign: "left",
     left: 20,
-    bottom: 10, 
+    bottom: 10,
   },
   greetingText: {
     fontSize: 36,
     width: "50%",
     fontWeight: "bold",
-    color: "#fff", 
+    color: "#fff",
     marginBottom: 5,
   },
   subText: {
@@ -91,10 +101,10 @@ const styles = StyleSheet.create({
   },
   taskSection: {
     padding: 20,
-    backgroundColor: colors.backgroundLight, // Görevlerin bulunduğu alanın arka planı
+    backgroundColor: colors.backgroundLight,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    marginTop: -20, // Görsel ile içerik arasında geçiş
+    marginTop: -20,
   },
   taskHeader: {
     fontSize: 20,
@@ -119,7 +129,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.textDark,
   },
-  
   moodTrackerSection: {
     backgroundColor: colors.accentLight,
     padding: 20,

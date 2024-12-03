@@ -1,20 +1,33 @@
-import { Link } from "expo-router";
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { useRouter } from "expo-router";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faGear, faUser } from "@fortawesome/free-solid-svg-icons";
 import colors from "../styles/globalStyles";
 
 export default function Header() {
+  const router = useRouter();
+
   return (
     <View style={styles.header}>
-      <Link href="/screens/AboutPage" style={styles.navItemSettings}>
-      <FontAwesomeIcon icon={faGear} size={24} style={styles.navItemSettings} />
-      </Link>
+      {/* Ayarlar Butonu */}
+      <TouchableOpacity
+        style={styles.navItemSettings}
+        onPress={() => router.push("/screens/AboutPage")}
+      >
+        <FontAwesomeIcon icon={faGear} size={24} style={styles.iconStyle} />
+      </TouchableOpacity>
+
+      {/* Başlık */}
       <Text style={styles.headerText}>TerapiniSec</Text>
-      <Link href="/screens/AboutPage" style={styles.navItemUser}>
-      <FontAwesomeIcon icon={faUser} size={24} style={styles.navItemUser} />
-      </Link>
+
+      {/* Kullanıcı Butonu */}
+      <TouchableOpacity
+        style={styles.navItemUser}
+        onPress={() => router.push("/screens/AboutPage")}
+      >
+        <FontAwesomeIcon icon={faUser} size={24} style={styles.iconStyle} />
+      </TouchableOpacity>
     </View>
   );
 }
@@ -24,7 +37,6 @@ const styles = StyleSheet.create({
     margin: "auto",
     display: "flex",
     width: "100%",
-    justifyItems: "around",
     flexDirection: "row",
     height: 60,
     backgroundColor: colors.backgroundLight,
@@ -38,12 +50,13 @@ const styles = StyleSheet.create({
   },
   navItemUser: {
     position: "absolute",
-    color: colors.textDark,
     right: 20,
   },
   navItemSettings: {
     position: "absolute",
-    color: colors.textDark,
     left: 20,
+  },
+  iconStyle: {
+    color: colors.textDark,
   },
 });

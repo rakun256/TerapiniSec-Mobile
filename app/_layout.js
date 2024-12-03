@@ -1,28 +1,20 @@
-import { Stack } from 'expo-router';
-import { View, StyleSheet } from 'react-native';
-import Header from './components/Header';
-import Navbar from './components/Navbar';
-import colors from './styles/globalStyles';
+import { View, StyleSheet } from "react-native";
+import { Slot } from "expo-router"; // Slot'u import ediyoruz
+import Header from "./components/Header";
+import Navbar from "./components/Navbar";
+import colors from "./styles/globalStyles";
 
 export default function Layout() {
   return (
     <View style={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
         <Header />
       </View>
 
-      {/* İçerik (Slot) */}
       <View style={styles.content}>
-        <Stack
-          screenOptions={{
-            headerShown: false, // Özel Header kullanıldığı için varsayılan header'ı gizle
-            animation: 'slide_from_right', // Geçiş animasyonu türü
-          }}
-        />
+        <Slot /> 
       </View>
 
-      {/* Navbar */}
       <View style={styles.navbar}>
         <Navbar />
       </View>
@@ -38,7 +30,7 @@ const styles = StyleSheet.create({
   header: {
     height: 60,
     backgroundColor: colors.backgroundLight,
-    zIndex: 1, // Üstte sabit kalması için
+    zIndex: 1,
   },
   content: {
     flex: 1,
@@ -47,6 +39,6 @@ const styles = StyleSheet.create({
   navbar: {
     height: 60,
     backgroundColor: colors.backgroundLight,
-    zIndex: 1, // Altta sabit kalması için
+    zIndex: 1,
   },
 });
