@@ -1,50 +1,82 @@
-# Welcome to your Expo app 👋
+### README.md
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+# TerapiniSec - Mental Health Mobile Application
 
-## Get started
+TerapiniSec is a mobile mental health platform designed to improve users' mental well-being and help them achieve their personal goals with professional support. The application offers features such as mood tracking, task management, group therapy sessions, and access to a library of helpful resources.
 
-1. Install dependencies
+---
 
+## Features
+- **Mood Tracker**: Log your daily mood to understand your emotional trends.
+- **Task Management**: Keep track of your daily and weekly mental health tasks.
+- **Group Therapy**: Join and participate in group therapy sessions.
+- **Library**: Access articles, resources, and self-help tools.
+- **Weekly Reports**: Visualize your weekly emotional and mental health progress.
+- **Push Notifications**: Stay reminded and motivated through tailored notifications.
+
+---
+
+## Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/terapinisec-mobile.git
+   cd terapinisec-mobile
+   ```
+
+2. Install dependencies:
    ```bash
    npm install
    ```
 
-2. Start the app
-
+3. Run the app:
    ```bash
-    npx expo start
+   npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+---
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Technologies Used
+- **Framework**: React Native (Expo)
+- **State Management**: Redux Toolkit
+- **Navigation**: Expo Router
+- **Styling**: Tailwind CSS and Custom Styles
+- **Charts**: react-native-chart-kit
+- **Icons**: Custom SVG icons
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+---
 
-## Get a fresh project
+## Project Structure
 
-When you're ready, run:
-
-```bash
-npm run reset-project
+```plaintext
+src/
+│
+├── components/       # Reusable UI components (Button, Card, Navbar, etc.)
+├── screens/          # Individual application screens
+├── redux/            # Redux slices and store
+├── styles/           # Global and shared styles
+├── utils/            # Utility functions and helpers
+├── assets/           # Fonts, icons, and images
+├── navigation/       # Application navigation setup
+└── services/         # API clients and services
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## License
 
-To learn more about developing your project with Expo, look at the following resources:
+All rights reserved.  
+You are not allowed to copy, distribute, or use any part of this project without explicit permission from the author.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+---
 
-## Join the community
+## Contribution
 
-Join our community of developers creating universal apps.
+Contributions are welcome! If you'd like to contribute, please fork the repository and submit a pull request. Before submitting, ensure that your changes align with the goals and structure of the project.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+---
+
+## Contact
+
+For any inquiries or feedback, feel free to reach out:
+- **GitHub**: [rakun256](https://github.com/rakun256)
