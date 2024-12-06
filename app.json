@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "TerapiniSec-Mobile",
-    "slug": "TerapiniSec-Mobile",
+    "name": "TerapiniSec",
+    "slug": "TerapiniSec",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -14,8 +14,9 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "backgroundColor": "#fdf2f8"
+      },
+      "package": "com.emreuslu.TerapiniSecMobile"
     },
     "web": {
       "bundler": "metro",
@@ -30,12 +31,20 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#fdf2f8"
         }
       ]
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "59ab6e5a-b46d-498c-9fb7-00507224f256"
+      }
     }
   }
 }
