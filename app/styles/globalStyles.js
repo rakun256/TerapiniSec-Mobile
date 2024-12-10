@@ -7,9 +7,9 @@ export const lightTheme = {
 };
 
 export const darkTheme = {
-  accentLight: "#3A3A3A", // Hafif vurgu rengi için açık gri
-  accentDark: "#1F1F1F", // Koyu vurgular için daha koyu gri
-  backgroundLight: "#121212", // Arka plan için çok koyu gri
-  textDark: "#FFFFFF", // Yazılar için beyaz renk
-  textLight: "#B0B0B0", // Daha az belirgin yazılar için açık gri
+  accentLight: "#3A3A3A", 
+  accentDark: "#1F1F1F", 
+  backgroundLight: "#121212",
+  textDark: "#FFFFFF", 
+  textLight: "#B0B0B0", 
 };
