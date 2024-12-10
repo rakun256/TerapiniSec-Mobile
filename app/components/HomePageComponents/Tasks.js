@@ -2,9 +2,12 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import * as Progress from "react-native-progress";
 import tasksData from "../../utils/data/tasksData";
-import colors from "../../styles/globalStyles";
+import { useTheme } from "../../utils/themeContext";
 
 export default function Tasks() {
+  const { theme , headerFontSize, bodyFontSize} = useTheme(); // Temayı alıyoruz
+  const styles = createStyles(theme,headerFontSize,bodyFontSize); // Dinamik stiller oluşturuyoruz
+
   const completedTasks = tasksData.filter((task) => task.completed).length;
   const totalTasks = tasksData.length;
   const progress = completedTasks / totalTasks;
@@ -17,8 +20,8 @@ export default function Tasks() {
         width={null}
         height={10}
         borderRadius={5}
-        color={colors.accentDark}
-        unfilledColor={colors.accentLight}
+        color={theme.accentDark}
+        unfilledColor={theme.accentLight}
         style={styles.progressBar}
       />
       <Text style={styles.progressText}>
@@ -34,46 +37,48 @@ export default function Tasks() {
   );
 }
 
-const styles = StyleSheet.create({
-  taskSection: {
-    padding: 20,
-    backgroundColor: colors.backgroundLight,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    marginTop: -20,
-  },
-  taskHeader: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: colors.textDark,
-    marginBottom: 10,
-  },
-  progressBar: {
-    marginVertical: 10,
-  },
-  progressText: {
-    fontSize: 14,
-    color: colors.textDark,
-    marginBottom: 10,
-    textAlign: "right",
-  },
-  taskItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginVertical: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    backgroundColor: colors.accentLight,
-    borderRadius: 5,
-    
-  },
-  taskIcon: {
-    fontSize: 24,
-    marginRight: 15,
-  },
-  taskText: {
-    fontSize: 16,
-    color: colors.textDark,
-    marginRight: 20,
-  },
-});
+// Dinamik temaya göre stil oluşturma fonksiyonu
+const createStyles = (theme,headerFontSize,bodyFontSize) =>
+  StyleSheet.create({
+    taskSection: {
+      padding: 20,
+      backgroundColor: theme.backgroundLight,
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      marginTop: -20,
+    },
+    taskHeader: {
+      fontSize: headerFontSize,
+      fontWeight: "bold",
+      color: theme.textDark,
+      marginBottom: 10,
+    },
+    progressBar: {
+      marginVertical: 10,
+    },
+    progressText: {
+      fontSize: bodyFontSize,
+      color: theme.textDark,
+      marginBottom: 10,
+      textAlign: "right",
+    },
+    taskItem: {
+      flexDirection: "row",
+      alignItems: "center",
+      marginVertical: 10,
+      paddingVertical: 10,
+      paddingHorizontal: 15,
+      backgroundColor: theme.accentLight,
+      borderRadius: 5,
+    },
+    taskIcon: {
+      fontSize: 24,
+      marginRight: 15,
+    },
+    taskText: {
+      fontSize: bodyFontSize,
+      color: theme.textDark,
+      marginRight: 20,
+    },
+  });
+

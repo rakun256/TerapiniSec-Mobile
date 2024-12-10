@@ -1,13 +1,15 @@
 import React from "react";
 import { View, Text, StyleSheet, Dimensions, FlatList, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
-import groupTherapiesData from "../../utils/data/groupTherapiesData"; 
-import colors from "../../styles/globalStyles";
+import groupTherapiesData from "../../utils/data/groupTherapiesData";
+import { useTheme } from "../../utils/themeContext";
 
 const { width } = Dimensions.get("window");
 
 export default function GroupTherapyFlatList() {
   const router = useRouter();
+  const { theme,headerFontSize , bodyFontSize } = useTheme();
+  const styles = createStyles(theme,headerFontSize , bodyFontSize);
 
   const renderItem = ({ item }) => (
     <View style={styles.card}>
@@ -18,7 +20,7 @@ export default function GroupTherapyFlatList() {
       <Text style={styles.cardDescription}>{item.description}</Text>
       <TouchableOpacity
         style={styles.detailButton}
-        onPress={() => router.push(`/GroupTherapyDetailScreen?id=${item.id}`)}
+        onPress={() => router.push(`/grouptherapy-detail/${item.id}`)}
       >
         <Text style={styles.detailButtonText}>Detayları Gör</Text>
       </TouchableOpacity>
@@ -36,63 +38,64 @@ export default function GroupTherapyFlatList() {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.flatListContainer}
         snapToInterval={width * 0.8 + 15}
-        decelerationRate="fast" 
-        snapToAlignment="start" 
+        decelerationRate="fast"
+        snapToAlignment="start"
         overScrollMode="never"
       />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    backgroundColor: colors.backgroundLight,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    marginTop: 20,
-  },
-  header: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: colors.textDark,
-    marginBottom: 15,
-  },
-  flatListContainer: {
-    paddingLeft: 10,
-  },
-  card: {
-    backgroundColor: colors.accentLight,
-    padding: 20,
-    borderRadius: 10,
-    marginRight: 15,
-    width: width * 0.8,
-  },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: colors.textDark,
-    marginBottom: 10,
-  },
-  cardDate: {
-    fontSize: 14,
-    color: colors.textDark,
-    marginBottom: 5,
-  },
-  cardDescription: {
-    fontSize: 14,
-    color: colors.textDark,
-    marginBottom: 15,
-  },
-  detailButton: {
-    backgroundColor: colors.accentDark,
-    paddingVertical: 10,
-    borderRadius: 10,
-    alignItems: "center",
-  },
-  detailButtonText: {
-    color: colors.textDark,
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-});
+const createStyles = (theme,headerFontSize , bodyFontSize) =>
+  StyleSheet.create({
+    container: {
+      padding: 20,
+      backgroundColor: theme.backgroundLight,
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      marginTop: 20,
+    },
+    header: {
+      fontSize: headerFontSize,
+      fontWeight: "bold",
+      color: theme.textDark,
+      marginBottom: 15,
+    },
+    flatListContainer: {
+      paddingLeft: 10,
+    },
+    card: {
+      backgroundColor: theme.accentLight,
+      padding: 20,
+      borderRadius: 10,
+      marginRight: 15,
+      width: width * 0.8,
+    },
+    cardTitle: {
+      fontSize: headerFontSize - 1,
+      fontWeight: "bold",
+      color: theme.textDark,
+      marginBottom: 10,
+    },
+    cardDate: {
+      fontSize: bodyFontSize - 2,
+      color: theme.textDark,
+      marginBottom: 5,
+    },
+    cardDescription: {
+      fontSize: bodyFontSize - 2,
+      color: theme.textDark,
+      marginBottom: 15,
+    },
+    detailButton: {
+      backgroundColor: theme.accentDark,
+      paddingVertical: 10,
+      borderRadius: 10,
+      alignItems: "center",
+    },
+    detailButtonText: {
+      color: theme.textDark,
+      fontWeight: "bold",
+      fontSize: bodyFontSize,
+    },
+  });

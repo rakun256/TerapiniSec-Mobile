@@ -3,22 +3,24 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 import { ProgressChart } from "react-native-chart-kit";
 import weeklyReportData from "../../utils/data/weeklyReportData";
-import colors from "../../styles/globalStyles";
+import { useTheme } from "../../utils/themeContext";
 
 export default function WeeklyReportPreview() {
   const router = useRouter();
+  const { theme , headerFontSize , bodyFontSize} = useTheme(); // Temayı alıyoruz
+  const styles = createStyles(theme, headerFontSize , bodyFontSize); // Temaya dayalı stiller oluşturuyoruz
 
   const chartConfig = {
-    backgroundColor: colors.accentLight,
-    backgroundGradientFrom: colors.accentLight,
-    backgroundGradientTo: colors.accentLight,
+    backgroundColor: theme.accentLight,
+    backgroundGradientFrom: theme.accentLight,
+    backgroundGradientTo: theme.accentLight,
     color: (opacity = 1, index) => {
       if (index === 0) return `rgba(0, 255, 0, ${opacity})`;
       if (index === 1) return `rgba(0, 0, 255, ${opacity})`;
       if (index === 2) return `rgba(255, 0, 0, ${opacity})`;
-      return colors.textDark;
+      return theme.textDark;
     },
-    labelColor: (opacity = 1) => colors.textDark,
+    labelColor: (opacity = 1) => theme.textDark,
   };
 
   return (
@@ -44,30 +46,32 @@ export default function WeeklyReportPreview() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: colors.accentLight,
-    borderRadius: 15,
-    padding: 20,
-    margin: 20,
-    alignItems: "center",
-  },
-  header: {
-    width: "100%",
-    fontSize: 22, 
-    fontWeight: "bold",
-    color: colors.textDark,
-    marginBottom: 20,
-    textAlign: "left",
-  },
-  chart: {
-    marginBottom: 15, 
-  },
-  text: {
-    fontSize: 16, 
-    color: colors.textDark,
-    textAlign: "center",
-    marginTop: 10, 
-    lineHeight: 20, 
-  },
-});
+// Dinamik temaya göre stil oluşturma fonksiyonu
+const createStyles = (theme, headerFontSize , bodyFontSize) =>
+  StyleSheet.create({
+    container: {
+      backgroundColor: theme.accentLight,
+      borderRadius: 15,
+      padding: 20,
+      margin: 20,
+      alignItems: "center",
+    },
+    header: {
+      width: "100%",
+      fontSize: headerFontSize,
+      fontWeight: "bold",
+      color: theme.textDark,
+      marginBottom: 20,
+      textAlign: "left",
+    },
+    chart: {
+      marginBottom: 15,
+    },
+    text: {
+      fontSize: bodyFontSize,
+      color: theme.textDark,
+      textAlign: "center",
+      marginTop: 10,
+      lineHeight: 20,
+    },
+  });

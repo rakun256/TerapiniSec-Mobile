@@ -1,10 +1,12 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
-import colors from "../../styles/globalStyles";
+import { useTheme } from "../../utils/themeContext";
 
 export default function MoodTracker() {
   const router = useRouter();
+  const { theme , headerFontSize , bodyFontSize } = useTheme();
+  const styles = createStyles(theme, headerFontSize , bodyFontSize);
 
   return (
     <View style={styles.moodTrackerSection}>
@@ -19,31 +21,32 @@ export default function MoodTracker() {
   );
 }
 
-const styles = StyleSheet.create({
-  moodTrackerSection: {
-    backgroundColor: colors.accentLight,
-    padding: 20,
-    margin: 20,
-    borderRadius: 10,
-  },
-  moodTrackerHeader: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: colors.textDark,
-    marginBottom: 10,
-    textAlign: "center",
-  },
-  moodTrackerButton: {
-    backgroundColor: colors.accentDark,
-    paddingVertical: 15,
-    borderRadius: 10,
-    alignItems: "center",
-    marginTop: 10,
-  },
-  moodTrackerButtonText: {
-    color: colors.textDark,
-    fontWeight: "bold",
-    textAlign: "center",
-    fontSize: 16,
-  },
-});
+const createStyles = (theme, headerFontSize , bodyFontSize) =>
+  StyleSheet.create({
+    moodTrackerSection: {
+      backgroundColor: theme.accentLight,
+      padding: 20,
+      margin: 20,
+      borderRadius: 10,
+    },
+    moodTrackerHeader: {
+      fontSize: headerFontSize,
+      fontWeight: "bold",
+      color: theme.textDark,
+      marginBottom: 10,
+      textAlign: "center",
+    },
+    moodTrackerButton: {
+      backgroundColor: theme.accentDark,
+      paddingVertical: 15,
+      borderRadius: 10,
+      alignItems: "center",
+      marginTop: 10,
+    },
+    moodTrackerButtonText: {
+      color: theme.textDark,
+      fontWeight: "bold",
+      textAlign: "center",
+      fontSize: bodyFontSize,
+    },
+  });

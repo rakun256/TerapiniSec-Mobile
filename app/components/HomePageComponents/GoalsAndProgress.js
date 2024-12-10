@@ -2,9 +2,12 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import ProgressBar from "react-native-progress/Bar";
 import goalsData from "../../utils/data/goalsData";
-import colors from "../../styles/globalStyles";
+import { useTheme } from "../../utils/themeContext";
 
 export default function GoalsAndProgress() {
+  const { theme , headerFontSize , bodyFontSize} = useTheme();
+  const styles = createStyles(theme , headerFontSize , bodyFontSize);
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Hedefler ve İlerleme</Text>
@@ -15,8 +18,8 @@ export default function GoalsAndProgress() {
             progress={goal.progress}
             width={null}
             height={10}
-            color={colors.accentDark}
-            unfilledColor={colors.accentLight}
+            color={theme.accentDark}
+            unfilledColor={theme.accentLight}
             borderWidth={0}
           />
           <Text style={styles.progressText}>
@@ -28,31 +31,32 @@ export default function GoalsAndProgress() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    backgroundColor: colors.accentLight,
-    borderRadius: 10,
-    margin: 20,
-  },
-  header: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: colors.textDark,
-    marginBottom: 20,
-  },
-  goalItem: {
-    marginBottom: 20,
-  },
-  goalText: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: colors.textDark,
-    marginBottom: 5,
-  },
-  progressText: {
-    fontSize: 14,
-    color: colors.textDark,
-    marginTop: 5,
-  },
-});
+const createStyles = (theme, headerFontSize , bodyFontSize) =>
+  StyleSheet.create({
+    container: {
+      padding: 20,
+      backgroundColor: theme.accentLight,
+      borderRadius: 10,
+      margin: 20,
+    },
+    header: {
+      fontSize: headerFontSize,
+      fontWeight: "bold",
+      color: theme.textDark,
+      marginBottom: 20,
+    },
+    goalItem: {
+      marginBottom: 20,
+    },
+    goalText: {
+      fontSize: bodyFontSize,
+      fontWeight: "bold",
+      color: theme.textDark,
+      marginBottom: 5,
+    },
+    progressText: {
+      fontSize: bodyFontSize - 2,
+      color: theme.textDark,
+      marginTop: 5,
+    },
+  });

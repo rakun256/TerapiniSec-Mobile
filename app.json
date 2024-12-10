@@ -1,12 +1,12 @@
 {
   "expo": {
     "name": "TerapiniSec",
-    "slug": "TerapiniSec",
-    "version": "1.0.0",
+    "slug": "TerapiniSec-Mobile",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true
@@ -14,7 +14,8 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#fdf2f8"
+        "backgroundColor": "#fdf2f8",
+        "versionCode": 2
       },
       "package": "com.emreuslu.TerapiniSecMobile"
     },

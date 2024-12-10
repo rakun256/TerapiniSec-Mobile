@@ -1,11 +1,13 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
-import colors from "../../styles/globalStyles";
+import { useTheme } from "../../utils/themeContext";
 import libraryData from "../../utils/data/libraryData";
 
 export default function LibraryPreview() {
   const router = useRouter();
+  const { theme , headerFontSize , bodyFontSize} = useTheme();
+  const styles = createStyles(theme , headerFontSize , bodyFontSize);
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -40,63 +42,64 @@ export default function LibraryPreview() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: colors.accentLight,
-    borderRadius: 10,
-    padding: 20,
-    margin: 20,
-  },
-  header: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: colors.textDark,
-    marginBottom: 10,
-  },
-  flatListContainer: {
-    paddingVertical: 10,
-  },
-  card: {
-    backgroundColor: colors.accentDark,
-    borderRadius: 10,
-    width: 150,
-    marginRight: 15,
-    padding: 10,
-    alignItems: "center",
-  },
-  bookCover: {
-    width: 140,
-    height: 200,
-    backgroundColor: colors.accentDark,
-    borderRadius: 5,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 10,
-  },
-  bookTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: colors.textDark,
-    textAlign: "left",
-    marginBottom: 50,
-    width: "100%",
-  },
-  bookAuthor: {
-    width: "100%",
-    fontSize: 14,
-    color: colors.textLight,
-    textAlign: "left",
-  },
-  button: {
-    backgroundColor: colors.accentDark,
-    padding: 15,
-    borderRadius: 10,
-    alignItems: "center",
-    marginTop: 20,
-  },
-  buttonText: {
-    color: colors.textDark,
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-});
+const createStyles = (theme , headerFontSize , bodyFontSize) =>
+  StyleSheet.create({
+    container: {
+      backgroundColor: theme.accentLight,
+      borderRadius: 10,
+      padding: 20,
+      margin: 20,
+    },
+    header: {
+      fontSize: headerFontSize,
+      fontWeight: "bold",
+      color: theme.textDark,
+      marginBottom: 10,
+    },
+    flatListContainer: {
+      paddingVertical: 10,
+    },
+    card: {
+      backgroundColor: theme.accentDark,
+      borderRadius: 10,
+      width: 150,
+      marginRight: 15,
+      padding: 10,
+      alignItems: "center",
+    },
+    bookCover: {
+      width: 140,
+      height: 200,
+      backgroundColor: theme.accentDark,
+      borderRadius: 5,
+      justifyContent: "center",
+      alignItems: "center",
+      padding: 10,
+    },
+    bookTitle: {
+      fontSize: bodyFontSize + 2,
+      fontWeight: "bold",
+      color: theme.textDark,
+      textAlign: "left",
+      marginBottom: 50,
+      width: "100%",
+    },
+    bookAuthor: {
+      width: "100%",
+      fontSize: bodyFontSize - 2,
+      color: theme.textLight,
+      textAlign: "left",
+    },
+    button: {
+      backgroundColor: theme.accentDark,
+      padding: 15,
+      borderRadius: 10,
+      alignItems: "center",
+      marginTop: 20,
+    },
+    buttonText: {
+      color: theme.textDark,
+      fontSize: bodyFontSize,
+      fontWeight: "bold",
+    },
+  });
