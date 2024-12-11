@@ -6,12 +6,11 @@ import { useTheme } from "../../utils/themeContext";
 
 export default function SleepTrackingAndTips() {
   const router = useRouter();
-  const { theme , headerFontSize , bodyFontSize } = useTheme();
-  const styles = createStyles(theme, headerFontSize , bodyFontSize);
+  const { theme, headerFontSize, bodyFontSize } = useTheme();
+  const styles = createStyles(theme, headerFontSize, bodyFontSize);
 
   return (
     <View style={styles.container}>
-      {/* Son Uyku Kayıtları */}
       <View style={styles.section}>
         <Text style={styles.header}>Son Uyku Kayıtları</Text>
         {sleepData.logs.map((log) => (
@@ -48,7 +47,7 @@ export default function SleepTrackingAndTips() {
   );
 }
 
-const createStyles = (theme ,headerFontSize , bodyFontSize) =>
+const createStyles = (theme, headerFontSize, bodyFontSize) =>
   StyleSheet.create({
     container: {
       padding: 20,
@@ -72,7 +71,7 @@ const createStyles = (theme ,headerFontSize , bodyFontSize) =>
       borderRadius: 5,
     },
     logText: {
-      fontSize: bodyFontSize -2,
+      fontSize: bodyFontSize - 2,
       color: theme.textDark,
     },
     tipItem: {
