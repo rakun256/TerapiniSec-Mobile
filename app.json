@@ -14,7 +14,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#fdf2f8",
+        "backgroundColor": "#E0EDF5",
         "versionCode": 3
       },
       "package": "com.emreuslu.TerapiniSecMobile"
@@ -32,7 +32,7 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#fdf2f8"
+          "backgroundColor": "#E0EDF5"
         }
       ]
     ],
