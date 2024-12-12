@@ -5,8 +5,8 @@ import goalsData from "../../utils/data/goalsData";
 import { useTheme } from "../../utils/themeContext";
 
 export default function GoalsAndProgress() {
-  const { theme , headerFontSize , bodyFontSize} = useTheme();
-  const styles = createStyles(theme , headerFontSize , bodyFontSize);
+  const { theme, headerFontSize, bodyFontSize } = useTheme();
+  const styles = createStyles(theme, headerFontSize, bodyFontSize);
 
   return (
     <View style={styles.container}>
@@ -18,9 +18,10 @@ export default function GoalsAndProgress() {
             progress={goal.progress}
             width={null}
             height={10}
+            borderRadius={5}
             color={theme.accentDark}
             unfilledColor={theme.accentLight}
-            borderWidth={0}
+            style={styles.progressBar}
           />
           <Text style={styles.progressText}>
             %{Math.round(goal.progress * 100)} tamamlandı
@@ -31,7 +32,7 @@ export default function GoalsAndProgress() {
   );
 }
 
-const createStyles = (theme, headerFontSize , bodyFontSize) =>
+const createStyles = (theme, headerFontSize, bodyFontSize) =>
   StyleSheet.create({
     container: {
       padding: 20,
