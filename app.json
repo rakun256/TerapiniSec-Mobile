@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "TerapiniSec",
+    "name": "TerapiniSeç",
     "slug": "TerapiniSec-Mobile",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -15,7 +15,7 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#E0EDF5",
-        "versionCode": 3
+        "versionCode": 4
       },
       "package": "com.emreuslu.TerapiniSecMobile"
     },
