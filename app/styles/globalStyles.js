@@ -1,7 +1,7 @@
 export const lightTheme = {
   accentLight: "#E0EDF5",
   accentDark: "#28617F",
-  backgroundLight: "#003554",
+  backgroundLight: "#E0EDF5",
   textDark: "#003554",
   textLight: "#486A6C",
 };
