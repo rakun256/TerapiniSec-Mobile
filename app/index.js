@@ -15,12 +15,6 @@ import LibraryPreview from "./components/HomePageComponents/Library";
 export default function HomePage() {
   const scrollViewRef = useRef(null);
 
-  useEffect(() => {
-    if (scrollViewRef.current) {
-      scrollViewRef.current.scrollTo({ y: 0, animated: false });
-    }
-  }, []);
-
   return (
     <ScrollView ref={scrollViewRef} contentContainerStyle={styles.scrollContainer}>
       <StoriesPreview />
