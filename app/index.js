@@ -10,13 +10,30 @@ import GoalsAndProgress from "./components/HomePageComponents/GoalsAndProgress";
 import SurveysPreview from "./components/HomePageComponents/SurveyPreview";
 import StoriesPreview from "./components/HomePageComponents/StoriesPreview";
 import LibraryPreview from "./components/HomePageComponents/Library";
-
+import { useHomeScroll } from "./utils/homeScrollContext";
 
 export default function HomePage() {
   const scrollViewRef = useRef(null);
+  const { homeScrollY, setHomeScrollY } = useHomeScroll();
+
+  useEffect(() => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({ y: homeScrollY, animated: false });
+    }
+  }, [homeScrollY]);
+
+  const handleScroll = (event) => {
+    const currentY = event.nativeEvent.contentOffset.y;
+    setHomeScrollY(currentY);
+  };
 
   return (
-    <ScrollView ref={scrollViewRef} contentContainerStyle={styles.scrollContainer}>
+    <ScrollView
+      ref={scrollViewRef}
+      contentContainerStyle={styles.scrollContainer}
+      onScroll={handleScroll}
+      scrollEventThrottle={16}
+    >
       <StoriesPreview />
       <Greeting />
       <Tasks />
