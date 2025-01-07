@@ -1,11 +1,14 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useTheme } from "../utils/themeContext";
-import moodData from "../utils/data/moodData";
+import moodData from "../utils/data/moodData"; // Artık yeni şema
 
 export default function MoodTrackerScreen() {
   const { theme } = useTheme();
   const styles = createStyles(theme);
+
+  // Örnek: userMoods dizisini, virgülle ayırarak tek satırda göstermek
+  // veya ilk mood'u göstermek. Tamamen tasarıma bağlı.
 
   return (
     <View style={styles.container}>
@@ -15,6 +18,7 @@ export default function MoodTrackerScreen() {
       </Text>
       <Text style={styles.subtitle}>Bugün kendinizi nasıl hissediyorsunuz?</Text>
 
+      {/* Yeni ruh hali seçenekleri vs. */}
       <View style={styles.options}>
         <TouchableOpacity style={styles.option}>
           <Text>Harika, kendimi iyi hissediyorum</Text>
@@ -33,12 +37,32 @@ export default function MoodTrackerScreen() {
 
       <Text style={styles.subtitle}>Geçmiş Ruh Hali Kayıtları</Text>
       <View style={styles.historyContainer}>
-        {moodData.map((mood) => (
-          <View key={mood.id} style={styles.historyItem}>
-            <Text style={styles.historyDate}>{mood.date}</Text>
-            <Text style={styles.historyMood}>{mood.mood}</Text>
-          </View>
-        ))}
+        {moodData.map((mood) => {
+          // logDateTime -> tarih-saat formatlama
+          const dateObj = new Date(mood.logDateTime);
+          const dateStr = dateObj.toLocaleDateString("tr-TR");
+          const timeStr = dateObj.toLocaleTimeString("tr-TR", {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+
+          return (
+            <View key={mood.id} style={styles.historyItem}>
+              {/* Tarih-saat */}
+              <Text style={styles.historyDate}>
+                {dateStr} - {timeStr}
+              </Text>
+              {/* userMoods dizisini virgülle ayırarak gösteriyoruz */}
+              <Text style={styles.historyMood}>
+                {mood.userMoods.join(", ")} 
+              </Text>
+              {/* Description (kullanıcının o anki durumu) */}
+              <Text style={styles.historyDescription}>
+                {mood.description}
+              </Text>
+            </View>
+          );
+        })}
       </View>
     </View>
   );
@@ -105,6 +129,10 @@ const createStyles = (theme) =>
       color: theme.textDark,
     },
     historyMood: {
+      fontSize: 14,
+      color: theme.textDark,
+    },
+    historyDescription: {
       fontSize: 14,
       color: theme.textLight,
     },
