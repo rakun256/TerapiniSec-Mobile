@@ -4,18 +4,21 @@ import { Slot } from "expo-router"; // Slot'u import ediyoruz
 import Header from "./components/Header";
 import Navbar from "./components/Navbar";
 import { useTheme, ThemeProvider } from "./utils/themeContext";
+import { HomeScrollProvider } from "./utils/homeScrollContext";
 
 export default function Layout() {
   return (
     <ThemeProvider>
-      <ThemedLayout />
+      <HomeScrollProvider>
+        <ThemedLayout />
+      </HomeScrollProvider>
     </ThemeProvider>
   );
 }
 
 function ThemedLayout() {
-  const { theme } = useTheme(); 
-  const styles = createStyles(theme); 
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
 
   return (
     <View style={styles.container}>
