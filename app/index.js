@@ -14,19 +14,22 @@ import { useHomeScroll } from "./utils/homeScrollContext";
 
 export default function HomePage() {
   const scrollViewRef = useRef(null);
+  const hasScrolledToSavedPosition = useRef(false);
   const { homeScrollY, setHomeScrollY } = useHomeScroll();
 
   useEffect(() => {
-    if (scrollViewRef.current) {
+    if (!hasScrolledToSavedPosition.current && scrollViewRef.current) {
       scrollViewRef.current.scrollTo({ y: homeScrollY, animated: false });
+      hasScrolledToSavedPosition.current = true;
     }
   }, [homeScrollY]);
 
   const handleScroll = (event) => {
     const currentY = event.nativeEvent.contentOffset.y;
-    setHomeScrollY(currentY);
+    if (hasScrolledToSavedPosition.current) {
+      setHomeScrollY(currentY);
+    }
   };
-
   return (
     <ScrollView
       ref={scrollViewRef}
