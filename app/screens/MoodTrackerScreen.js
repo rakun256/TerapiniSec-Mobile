@@ -108,14 +108,14 @@ const createStyles = (theme) =>
       padding: 15,
       borderRadius: 10,
       alignItems: "center",
-      marginBottom: 10,
+      marginBottom: 40,
     },
     recordButtonText: {
       color: theme.textDark,
       fontWeight: "bold",
     },
     historyContainer: {
-      marginTop: 20,
+      marginTop: 5,
       borderTopWidth: 1,
       borderColor: theme.accentLight,
       paddingTop: 10,
