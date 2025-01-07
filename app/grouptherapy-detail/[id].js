@@ -1,7 +1,12 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import groupTherapiesData from "../utils/data/groupTherapiesData";
+import groupTherapiesData from "../utils/data/groupTherapiesData"; // Yeni şema
 import { useTheme } from "../utils/themeContext";
 
 export default function GroupTherapyDetailScreen() {
@@ -10,7 +15,8 @@ export default function GroupTherapyDetailScreen() {
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
-  const therapy = groupTherapiesData.find((item) => item.id === id);
+  // ID, string olarak geliyor olabilir; sayıya çeviriyoruz
+  const therapy = groupTherapiesData.find((item) => item.id === Number(id));
 
   if (!therapy) {
     return (
@@ -23,11 +29,19 @@ export default function GroupTherapyDetailScreen() {
     );
   }
 
+  // sessionDateTime -> Tarih ve saat formatlama
+  const dateObj = new Date(therapy.sessionDateTime);
+  const dateStr = dateObj.toLocaleDateString("tr-TR");
+  const timeStr = dateObj.toLocaleTimeString("tr-TR", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{therapy.title}</Text>
+      <Text style={styles.title}>{therapy.sessionName}</Text>
       <Text style={styles.date}>
-        {therapy.date} tarihinde, saat {therapy.time}
+        {dateStr} tarihinde, saat {timeStr}
       </Text>
       <Text style={styles.description}>{therapy.description}</Text>
 

@@ -1,31 +1,54 @@
 import React from "react";
-import { View, Text, StyleSheet, Dimensions, FlatList, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import { useRouter } from "expo-router";
-import groupTherapiesData from "../../utils/data/groupTherapiesData";
+import groupTherapiesData from "../../utils/data/groupTherapiesData"; // Artık yeni şema
 import { useTheme } from "../../utils/themeContext";
 
 const { width } = Dimensions.get("window");
 
 export default function GroupTherapyFlatList() {
   const router = useRouter();
-  const { theme,headerFontSize , bodyFontSize } = useTheme();
-  const styles = createStyles(theme,headerFontSize , bodyFontSize);
+  const { theme, headerFontSize, bodyFontSize } = useTheme();
+  const styles = createStyles(theme, headerFontSize, bodyFontSize);
 
-  const renderItem = ({ item }) => (
-    <View style={styles.card}>
-      <Text style={styles.cardTitle}>{item.title}</Text>
-      <Text style={styles.cardDate}>
-        {item.date} tarihinde, saat {item.time}
-      </Text>
-      <Text style={styles.cardDescription}>{item.description}</Text>
-      <TouchableOpacity
-        style={styles.detailButton}
-        onPress={() => router.push(`/grouptherapy-detail/${item.id}`)}
-      >
-        <Text style={styles.detailButtonText}>Detayları Gör</Text>
-      </TouchableOpacity>
-    </View>
-  );
+  const renderItem = ({ item }) => {
+    // Tarih ve saat formatlama
+    const dateObj = new Date(item.sessionDateTime);
+    const dateStr = dateObj.toLocaleDateString("tr-TR"); // Örn. "10.12.2024"
+    const timeStr = dateObj.toLocaleTimeString("tr-TR", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    return (
+      <View style={styles.card}>
+        {/* sessionName'i başlık olarak göster */}
+        <Text style={styles.cardTitle}>{item.sessionName}</Text>
+
+        {/* sessionDateTime’den alınan tarih/saat bilgisi */}
+        <Text style={styles.cardDate}>
+          {dateStr} tarihinde, saat {timeStr}
+        </Text>
+
+        {/* description alanı */}
+        <Text style={styles.cardDescription}>{item.description}</Text>
+
+        <TouchableOpacity
+          style={styles.detailButton}
+          onPress={() => router.push(`/grouptherapy-detail/${item.id}`)}
+        >
+          <Text style={styles.detailButtonText}>Detayları Gör</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -33,7 +56,7 @@ export default function GroupTherapyFlatList() {
       <FlatList
         data={groupTherapiesData}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => String(item.id)}
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.flatListContainer}
@@ -46,7 +69,7 @@ export default function GroupTherapyFlatList() {
   );
 }
 
-const createStyles = (theme,headerFontSize , bodyFontSize) =>
+const createStyles = (theme, headerFontSize, bodyFontSize) =>
   StyleSheet.create({
     container: {
       padding: 20,
