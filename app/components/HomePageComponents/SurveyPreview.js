@@ -8,8 +8,8 @@ import { useRouter } from "expo-router";
 
 export default function SurveysPreview() {
   const router = useRouter();
-  const { theme , headerFontSize , bodyFontSize} = useTheme();
-  const styles = createStyles(theme , headerFontSize , bodyFontSize);
+  const { theme, headerFontSize, bodyFontSize } = useTheme();
+  const styles = createStyles(theme, headerFontSize, bodyFontSize);
 
   return (
     <View style={styles.container}>
@@ -24,6 +24,7 @@ export default function SurveysPreview() {
           <Text style={styles.surveyText}>{survey.title}</Text>
         </TouchableOpacity>
       ))}
+
       <TouchableOpacity
         style={styles.button}
         onPress={() => router.push("/screens/SurveyListScreen")}
@@ -34,7 +35,7 @@ export default function SurveysPreview() {
   );
 }
 
-const createStyles = (theme , headerFontSize , bodyFontSize) =>
+const createStyles = (theme, headerFontSize, bodyFontSize) =>
   StyleSheet.create({
     container: {
       backgroundColor: theme.accentLight,
