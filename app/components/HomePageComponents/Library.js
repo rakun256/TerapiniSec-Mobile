@@ -6,9 +6,10 @@ import libraryData from "../../utils/data/libraryData";
 
 export default function LibraryPreview() {
   const router = useRouter();
-  const { theme , headerFontSize , bodyFontSize} = useTheme();
-  const styles = createStyles(theme , headerFontSize , bodyFontSize);
+  const { theme, headerFontSize, bodyFontSize } = useTheme();
+  const styles = createStyles(theme, headerFontSize, bodyFontSize);
 
+  // Render edilecek her belge için kısa bir kart gösteriyoruz
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.card}
@@ -16,7 +17,8 @@ export default function LibraryPreview() {
     >
       <View style={styles.bookCover}>
         <Text style={styles.bookTitle}>{item.title}</Text>
-        <Text style={styles.bookAuthor}>by {item.author}</Text>
+        {/* item.uploaderName field'i da ekleyebilirsiniz */}
+        <Text style={styles.bookAuthor}>by {item.uploaderName}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -27,14 +29,15 @@ export default function LibraryPreview() {
       <FlatList
         data={libraryData}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => String(item.id)}
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.flatListContainer}
       />
+
       <TouchableOpacity
         style={styles.button}
-        onPress={() => router.push("/screens/LibraryScreen")}
+        onPress={() => router.push("/library-detail")}
       >
         <Text style={styles.buttonText}>Tüm Kaynaklara Git</Text>
       </TouchableOpacity>
@@ -42,7 +45,7 @@ export default function LibraryPreview() {
   );
 }
 
-const createStyles = (theme , headerFontSize , bodyFontSize) =>
+const createStyles = (theme, headerFontSize, bodyFontSize) =>
   StyleSheet.create({
     container: {
       backgroundColor: theme.accentLight,

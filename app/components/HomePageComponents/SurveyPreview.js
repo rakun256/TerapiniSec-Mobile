@@ -18,7 +18,7 @@ export default function SurveysPreview() {
         <TouchableOpacity
           key={survey.id}
           style={styles.surveyItem}
-          onPress={() => router.push(`/screens/SurveyDetailScreen?id=${survey.id}`)}
+          onPress={() => router.push(`/survey-detail`)}
         >
           <FontAwesomeIcon icon={faClipboardList} style={styles.icon} size={18} />
           <Text style={styles.surveyText}>{survey.title}</Text>
