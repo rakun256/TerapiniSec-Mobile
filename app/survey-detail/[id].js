@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { useTheme } from "../../utils/themeContext";
+import { useTheme } from "../utils/themeContext";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from "react-native";
-import surveysData from "../../utils/data/surveysData";
+import surveysData from "../utils/data/surveysData";
 
 export default function SurveyDetailScreen() {
   const router = useRouter();
