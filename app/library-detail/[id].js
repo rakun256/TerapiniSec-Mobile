@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Linking } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
-import { useTheme } from "../../utils/themeContext";
+import { useTheme } from "../utils/themeContext";
 import libraryData from "../../utils/data/libraryData";
 
 export default function FileDetailScreen() {
