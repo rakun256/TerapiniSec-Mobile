@@ -12,10 +12,10 @@
       "supportsTablet": true
     },
     "android": {
+      "versionCode": 4,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#E0EDF5",
-        "versionCode": 4
+        "backgroundColor": "#E0EDF5"
       },
       "package": "com.emreuslu.TerapiniSecMobile"
     },
