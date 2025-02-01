@@ -26,16 +26,14 @@ function ThemedLayout() {
     const checkAuth = async () => {
       const token = await AsyncStorage.getItem("userToken");
       setIsAuthenticated(!!token);
-  
+
       if (!token) {
-        setTimeout(() => {
-          router.replace("/login");
-        }, 0); 
+        setTimeout(() => router.replace("/login"), 0);
       }
     };
-  
+
     checkAuth();
-  }, []);  
+  }, []);
 
   const styles = createStyles(theme);
 
@@ -49,21 +47,19 @@ function ThemedLayout() {
 
   return (
     <View style={styles.container}>
-      {isAuthenticated ? (
+      {isAuthenticated && (
         <>
           <View style={styles.header}>
             <Header />
-          </View>
-          <View style={styles.content}>
-            <Slot />
           </View>
           <View style={styles.navbar}>
             <Navbar />
           </View>
         </>
-      ) : (
-        <Slot />
       )}
+      <View style={styles.content}>
+        <Slot />
+      </View>
     </View>
   );
 }
