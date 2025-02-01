@@ -6,23 +6,25 @@ import {
   TouchableOpacity,
   Switch,
   Alert,
-  StyleSheet
+  StyleSheet,
 } from "react-native";
 import { login } from "../utils/loginService";
 import { useTheme } from "../utils/themeContext";
+import { useRouter } from "expo-router";
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = () => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
   const { theme, headerFontSize, bodyFontSize } = useTheme();
+  const router = useRouter(); // Router hook'u
 
   const handleLogin = async () => {
     try {
       const { user } = await login(userName, password, rememberMe);
       Alert.alert("Başarılı Giriş", `Hoş geldiniz, ${user.firstName}`);
-      navigation.navigate("HomeScreen");
+      router.replace("/"); // Login sonrası ana sayfaya yönlendirme
     } catch (error) {
       Alert.alert("Giriş Hatası", error.message);
     }

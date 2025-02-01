@@ -35,12 +35,11 @@ function ThemedLayout() {
     checkAuth();
   }, []);
 
-  // Burada styles'ı dinamik olarak oluşturuyoruz
   const styles = createStyles(theme);
 
   if (isAuthenticated === null) {
     return (
-      <View style={[styles.loadingContainer]}>
+      <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color={theme.accentDark} />
       </View>
     );
@@ -48,26 +47,25 @@ function ThemedLayout() {
 
   return (
     <View style={styles.container}>
-      {isAuthenticated && (
+      {isAuthenticated ? (
         <>
           <View style={styles.header}>
             <Header />
           </View>
-
           <View style={styles.content}>
             <Slot />
           </View>
-
           <View style={styles.navbar}>
             <Navbar />
           </View>
         </>
+      ) : (
+        <Slot />
       )}
     </View>
   );
 }
 
-// Stil tanımları
 const createStyles = (theme) =>
   StyleSheet.create({
     container: {
