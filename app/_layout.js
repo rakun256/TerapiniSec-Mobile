@@ -3,15 +3,18 @@ import { View, StyleSheet, ActivityIndicator, Text } from "react-native";
 import { Slot, useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// Örnek: Kendi Header ve Navbar bileşenlerinizi import edin
+// Örneğin projenizde bu bileşenler "app/components/" klasöründe:
 import Header from "./components/Header";
 import Navbar from "./components/Navbar";
 
-// Tema context'inizi ve diğer provider'larınızı import edin
+// Tema ve diğer provider'ları projenizde "app/utils/" veya başka klasörden import edebilirsiniz.
 import { ThemeProvider, useTheme } from "./utils/themeContext";
 import { HomeScrollProvider } from "./utils/homeScrollContext";
 
-// RootLayout, ThemeProvider ve diğer sağlayıcıları sarmalar:
+/**
+ * RootLayout: En üst düzey sarmalayıcı.
+ * Expo Router V2'de `app/_layout.js` şeklinde konumlandırılmışsa "root layout" olarak kabul edilir.
+ */
 export default function RootLayout() {
   return (
     <ThemeProvider>
@@ -23,60 +26,65 @@ export default function RootLayout() {
 }
 
 /**
- * Ana layout bileşeni: Giriş yapılıp yapılmadığına göre
- * /login'e yönlendirir veya (Header, Navbar, Slot) içeriklerini gösterir.
+ * AuthenticatedLayout:
+ * - Token (userToken) var mı yok mu kontrol eder
+ * - Giriş yoksa /login sayfasına yönlendirir
+ * - Giriş varsa Header, Slot, Navbar içeren asıl layout'u gösterir
  */
 function AuthenticatedLayout() {
   const router = useRouter();
   const { theme } = useTheme();
 
-  // Kullanıcının giriş yapıp yapmadığı
-  const [isAuthenticated, setIsAuthenticated] = useState(null);
-  // AsyncStorage'den token okurken kullanılan loading durumu
-  const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(null); // Kullanıcı giriş yapmış mı?
+  const [isLoading, setIsLoading] = useState(true);             // Token kontrolü sürerken
+  const [isLayoutMounted, setIsLayoutMounted] = useState(false); // Layout tam mount oldu mu?
 
-  // Uygulama açılırken token kontrolü yapıyoruz
+  // Layout ilk kez ekrana geldiğinde "monte" olduğunu işaretle
   useEffect(() => {
-    const checkToken = async () => {
+    setIsLayoutMounted(true);
+  }, []);
+
+  // AsyncStorage'den token (userToken) var mı yok mu kontrol et
+  useEffect(() => {
+    (async () => {
       try {
         const token = await AsyncStorage.getItem("userToken");
-        setIsAuthenticated(!!token); // token varsa true, yoksa false
+        setIsAuthenticated(!!token);
       } catch (error) {
         console.warn("Token okunurken hata oluştu:", error);
         setIsAuthenticated(false);
       } finally {
         setIsLoading(false);
       }
-    };
-    checkToken();
+    })();
   }, []);
 
   /**
-   * isLoading biter bitmez ve kullanıcı giriş yapmamışsa,
-   * yönlendirmeyi `useEffect` içinde yapıyoruz. 
-   * Ek olarak `setTimeout(..., 0)` hilesi, Layout’un gerçekten 
-   * mount olmasını bekler ve “Attempted to navigate...” hatasını engeller.
+   * isLoading biter ve isAuthenticated === false ise,
+   * ayrıca layout da tamamen monte olmuşsa => /login sayfasına git
+   * Bu yönlendirmeyi useEffect içinde yaparak
+   * "Attempted to navigate before mounting the Root Layout component" hatasını engelliyoruz.
    */
   useEffect(() => {
-    if (!isLoading && isAuthenticated === false) {
-      setTimeout(() => {
-        router.replace("/login");
-      }, 0);
+    if (isLayoutMounted && !isLoading && isAuthenticated === false) {
+      router.replace("/login");
     }
-  }, [isLoading, isAuthenticated, router]);
+  }, [isLayoutMounted, isLoading, isAuthenticated, router]);
 
-  // 1) Token okunuyor, yüklenme sürüyor
+  // 1) Token kontrolü sürerken ekrana "yükleniyor" göstergesi
   if (isLoading) {
     return (
       <View style={styles(theme).centered}>
         <ActivityIndicator size="large" color={theme.accentDark} />
-        <Text style={{ marginTop: 8, color: theme.textDark }}>Yükleniyor...</Text>
+        <Text style={{ marginTop: 8, color: theme.textDark }}>
+          Yükleniyor...
+        </Text>
       </View>
     );
   }
 
-  // 2) Kullanıcı giriş yapmamışsa, yönlendirmeye kadar geçici bir ekran
-  // (çok kısa bir an görünebilir)
+  // 2) Giriş yoksa (isAuthenticated === false), yönlendirme effect'i çalışana kadar
+  // kısa bir indikatör gösteriyoruz
   if (isAuthenticated === false) {
     return (
       <View style={styles(theme).centered}>
@@ -88,7 +96,7 @@ function AuthenticatedLayout() {
     );
   }
 
-  // 3) Kullanıcı giriş yapmışsa normal layout'u göster
+  // 3) Kullanıcı giriş yapmışsa (token varsa), normal layout'u göster
   return (
     <View style={styles(theme).container}>
       <View style={styles(theme).header}>
@@ -96,7 +104,7 @@ function AuthenticatedLayout() {
       </View>
 
       <View style={styles(theme).content}>
-        {/* Slot, Expo Router’daki alt sayfaların içeriğini temsil eder */}
+        {/* Slot => Expo Router’da alt sayfaların içeriğini temsil eder */}
         <Slot />
       </View>
 
@@ -107,6 +115,10 @@ function AuthenticatedLayout() {
   );
 }
 
+/**
+ * Tema üzerinden dinamik stiller oluşturmak isteyen bir helper fonksiyon.
+ * (Kodunuzu sadeleştirmek için "theme"yi doğrudan kullanabilirsiniz.)
+ */
 const styles = (theme) =>
   StyleSheet.create({
     container: {
