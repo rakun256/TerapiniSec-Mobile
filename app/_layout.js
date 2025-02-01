@@ -46,21 +46,21 @@ function ThemedLayout() {
   return (
     <View style={styles.container}>
       {/* Header ve Navbar sadece giriş yapmış kullanıcılar için görünür */}
-      {isAuthenticated && (
+      {isAuthenticated ? (
         <>
           <View style={styles.header}>
             <Header />
+          </View>
+          <View style={styles.content}>
+            <Slot />
           </View>
           <View style={styles.navbar}>
             <Navbar />
           </View>
         </>
+      ) : (
+        <LoginScreen />
       )}
-
-      {/* Slot her zaman render ediliyor */}
-      <View style={styles.content}>
-        {isAuthenticated ? <Slot /> : <LoginScreen />}
-      </View>
     </View>
   );
 }
@@ -74,6 +74,8 @@ const createStyles = (theme) =>
     header: {
       height: 60,
       backgroundColor: theme.accentLight,
+      justifyContent: "center",
+      alignItems: "center",
     },
     content: {
       flex: 1,
