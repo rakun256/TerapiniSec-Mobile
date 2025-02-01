@@ -28,7 +28,7 @@ function ThemedLayout() {
       setIsAuthenticated(!!token);
 
       if (!token) {
-        router.replace("/login"); // Token yoksa login ekranına yönlendirme
+        router.replace("/login"); 
       }
     };
 
