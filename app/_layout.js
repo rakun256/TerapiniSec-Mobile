@@ -28,7 +28,7 @@ function ThemedLayout() {
       setIsAuthenticated(!!token);
 
       if (!token) {
-        router.replace("/login"); 
+        router.replace("/login");
       }
     };
 
@@ -51,6 +51,9 @@ function ThemedLayout() {
         <>
           <View style={styles.header}>
             <Header />
+          </View>
+          <View style={styles.content}>
+            <Slot />
           </View>
           <View style={styles.navbar}>
             <Navbar />
