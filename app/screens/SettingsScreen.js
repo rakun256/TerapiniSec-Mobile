@@ -43,13 +43,14 @@ export default function SettingsScreen() {
 
   const handleLogout = async () => {
     try {
-      await logout(); // Kullanıcı oturumunu sonlandır
+      await logout();  
       Alert.alert("Çıkış Yapıldı", "Başarıyla çıkış yaptınız.");
-      router.replace("/login"); // Login ekranına yönlendirme
+      router.replace("/login");  
     } catch (error) {
       Alert.alert("Çıkış Hatası", error.message);
     }
   };
+  
 
   return (
     <ScrollView
