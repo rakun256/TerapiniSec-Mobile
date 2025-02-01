@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, ActivityIndicator } from "react-native";
-import { Slot, useRouter } from "expo-router"; 
+import { Slot, useRouter } from "expo-router";
 import Header from "./components/Header";
 import Navbar from "./components/Navbar";
 import { useTheme, ThemeProvider } from "./utils/themeContext";
@@ -28,16 +28,19 @@ function ThemedLayout() {
       setIsAuthenticated(!!token);
 
       if (!token) {
-        router.replace("/login"); 
+        router.replace("/login");
       }
     };
 
     checkAuth();
   }, []);
 
+  // Burada styles'ı dinamik olarak oluşturuyoruz
+  const styles = createStyles(theme);
+
   if (isAuthenticated === null) {
     return (
-      <View style={[styles.loadingContainer, { backgroundColor: theme.backgroundLight }]}>
+      <View style={[styles.loadingContainer]}>
         <ActivityIndicator size="large" color={theme.accentDark} />
       </View>
     );
@@ -89,5 +92,6 @@ const createStyles = (theme) =>
       flex: 1,
       justifyContent: "center",
       alignItems: "center",
+      backgroundColor: theme.backgroundLight,
     },
   });
