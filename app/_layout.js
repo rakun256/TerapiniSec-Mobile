@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { View, StyleSheet, ActivityIndicator } from "react-native";
 import { Slot, useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -21,34 +21,62 @@ function ThemedLayout() {
   const { theme } = useTheme();
   const router = useRouter();
 
-  // Kullanıcı giriş durumunu ve yüklenme (loading) kontrolünü tutan state’ler
-  const [isAuthenticated, setIsAuthenticated] = useState(null);
+  // Kullanıcının giriş yapıp yapmadığını tutan state
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  // Token kontrolü sırasında loading göstermek için
   const [isLoading, setIsLoading] = useState(true);
-  // Layout’un ilk kez render edilip edilmediğini (mount durumunu) takip etmek
-  const [layoutMounted, setLayoutMounted] = useState(false);
 
-  // Layout bileşeni ilk kez ekrana geldiğinde mount durumunu true’ya çeker
+  /**
+   * Bu ref, bileşenin gerçekten "monte" (mount) olup olmadığını izlemek için.
+   * Bazı durumlarda bileşen henüz tam mount olmadan render fazında 
+   * router.replace() gibi işlemler yapmak hata verebiliyor.
+   */
+  const isMountedRef = useRef(false);
+
+  /**
+   * İlk render tamamlandığında (mount gerçekleştiğinde) isMountedRef.current = true yapıyoruz.
+   */
   useEffect(() => {
-    setLayoutMounted(true);
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
   }, []);
 
-  // AsyncStorage içindeki token’ı kontrol ederek giriş durumunu belirliyoruz
+  /**
+   * AsyncStorage içindeki userToken'i kontrol edip "isAuthenticated" değerini set ediyoruz.
+   * İşlem bitince isLoading=false yaparak bekleme ekranını (ActivityIndicator) kapatıyoruz.
+   */
   useEffect(() => {
     (async () => {
-      const token = await AsyncStorage.getItem("userToken");
-      setIsAuthenticated(!!token);
-      setIsLoading(false);
+      try {
+        const token = await AsyncStorage.getItem("userToken");
+        if (isMountedRef.current) {
+          setIsAuthenticated(!!token);
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.warn("Token okunurken hata oluştu:", error);
+        if (isMountedRef.current) {
+          setIsAuthenticated(false);
+          setIsLoading(false);
+        }
+      }
     })();
   }, []);
 
-  // Layout mount olduktan ve loading işlemi bittikten sonra, giriş yapılmamışsa login ekranına yönlendir
+  /**
+   * Kullanıcı login değilse, Layout tamamen mount olduktan sonra
+   * "/login" sayfasına yönlendirme yapıyoruz.
+   * Bunu useEffect içinde yaparak, “ilk render sırasında” yönlendirme yapılmamasını sağlıyoruz.
+   */
   useEffect(() => {
-    if (layoutMounted && !isLoading && isAuthenticated === false) {
+    if (!isLoading && isAuthenticated === false && isMountedRef.current) {
       router.replace("/login");
     }
-  }, [layoutMounted, isLoading, isAuthenticated]);
+  }, [isLoading, isAuthenticated]);
 
-  // Yüklenme aşaması sürerken indikatör göster
+  // Token kontrolü sürerken loading göstermek
   if (isLoading) {
     return (
       <View style={styles(theme).loadingContainer}>
@@ -57,13 +85,19 @@ function ThemedLayout() {
     );
   }
 
-  // Kullanıcı giriş yapmamış, ancak yönlendirme yapacak effect henüz çalışmadıysa 
-  // boş bir ekran döndürerek (null) bekliyoruz
-  if (isAuthenticated === false) {
+  /**
+   * Eğer kullanıcı auth değilse, yönlendirme effect’inin tetiklenmesini bekliyoruz.
+   * Boş bir ekran döndürüyoruz (return null).
+   * Eğer burada direkt `router.replace(...)` yaparsanız yine uyarı alabilirsiniz,
+   * bu yüzden yönlendirmeyi yukarıdaki useEffect’te kontrol ettik.
+   */
+  if (!isAuthenticated) {
     return null;
   }
 
-  // Kullanıcı giriş yapmışsa, header / navbar / sayfa içerikleri göster
+  /**
+   * Kullanıcı giriş yapmışsa normal Layout'u (Header, Slot, Navbar) döndürüyoruz.
+   */
   return (
     <View style={styles(theme).container}>
       <View style={styles(theme).header}>
