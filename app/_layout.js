@@ -21,21 +21,13 @@ function ThemedLayout() {
   const { theme } = useTheme();
   const router = useRouter();
 
-  // Kullanıcının giriş yapıp yapmadığını tutan state
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-  // Token kontrolü sırasında loading göstermek için
+  // TypeScript değil, JavaScript kullanıyorsanız <boolean | null> gibi tipleri kaldırın
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  /**
-   * Bu ref, bileşenin gerçekten "monte" (mount) olup olmadığını izlemek için.
-   * Bazı durumlarda bileşen henüz tam mount olmadan render fazında 
-   * router.replace() gibi işlemler yapmak hata verebiliyor.
-   */
+  // Bileşenin mount durumunu takip etmek için ref:
   const isMountedRef = useRef(false);
 
-  /**
-   * İlk render tamamlandığında (mount gerçekleştiğinde) isMountedRef.current = true yapıyoruz.
-   */
   useEffect(() => {
     isMountedRef.current = true;
     return () => {
@@ -43,15 +35,12 @@ function ThemedLayout() {
     };
   }, []);
 
-  /**
-   * AsyncStorage içindeki userToken'i kontrol edip "isAuthenticated" değerini set ediyoruz.
-   * İşlem bitince isLoading=false yaparak bekleme ekranını (ActivityIndicator) kapatıyoruz.
-   */
   useEffect(() => {
     (async () => {
       try {
         const token = await AsyncStorage.getItem("userToken");
         if (isMountedRef.current) {
+          // !!token, token varsa true, yoksa false yapar
           setIsAuthenticated(!!token);
           setIsLoading(false);
         }
@@ -65,18 +54,7 @@ function ThemedLayout() {
     })();
   }, []);
 
-  /**
-   * Kullanıcı login değilse, Layout tamamen mount olduktan sonra
-   * "/login" sayfasına yönlendirme yapıyoruz.
-   * Bunu useEffect içinde yaparak, “ilk render sırasında” yönlendirme yapılmamasını sağlıyoruz.
-   */
-  useEffect(() => {
-    if (!isLoading && isAuthenticated === false && isMountedRef.current) {
-      router.replace("/login");
-    }
-  }, [isLoading, isAuthenticated]);
-
-  // Token kontrolü sürerken loading göstermek
+  // Eğer hâlâ token'ı kontrol ediyorsak yüklenme ekranı göster
   if (isLoading) {
     return (
       <View style={styles(theme).loadingContainer}>
@@ -85,19 +63,12 @@ function ThemedLayout() {
     );
   }
 
-  /**
-   * Eğer kullanıcı auth değilse, yönlendirme effect’inin tetiklenmesini bekliyoruz.
-   * Boş bir ekran döndürüyoruz (return null).
-   * Eğer burada direkt `router.replace(...)` yaparsanız yine uyarı alabilirsiniz,
-   * bu yüzden yönlendirmeyi yukarıdaki useEffect’te kontrol ettik.
-   */
+  // Giriş yapılmadıysa, yönlendirmeyi ilk render sonrası useEffect’te yaptığımız için
+  // burada null dönüyoruz ki "navigate before mount" hatası çıkmasın
   if (!isAuthenticated) {
     return null;
   }
 
-  /**
-   * Kullanıcı giriş yapmışsa normal Layout'u (Header, Slot, Navbar) döndürüyoruz.
-   */
   return (
     <View style={styles(theme).container}>
       <View style={styles(theme).header}>
