@@ -23,7 +23,6 @@ function ThemedLayout() {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(null);
 
-  // Kullanıcı oturum kontrolü
   useEffect(() => {
     const checkAuth = async () => {
       const token = await AsyncStorage.getItem("userToken");
@@ -44,22 +43,23 @@ function ThemedLayout() {
     );
   }
 
-  // Kullanıcı giriş yapmamışsa Login ekranını göster
-  if (!isAuthenticated) {
-    return <LoginScreen />;
-  }
-
-  // Kullanıcı giriş yaptıysa uygulama ekranını göster
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Header />
-      </View>
+      {/* Header ve Navbar sadece giriş yapmış kullanıcılar için görünür */}
+      {isAuthenticated && (
+        <>
+          <View style={styles.header}>
+            <Header />
+          </View>
+          <View style={styles.navbar}>
+            <Navbar />
+          </View>
+        </>
+      )}
+
+      {/* Slot her zaman render ediliyor */}
       <View style={styles.content}>
-        <Slot />
-      </View>
-      <View style={styles.navbar}>
-        <Navbar />
+        {isAuthenticated ? <Slot /> : <LoginScreen />}
       </View>
     </View>
   );
