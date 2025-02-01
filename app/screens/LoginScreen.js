@@ -18,13 +18,13 @@ const LoginScreen = () => {
   const [rememberMe, setRememberMe] = useState(false);
 
   const { theme, headerFontSize, bodyFontSize } = useTheme();
-  const router = useRouter(); // Router hook'u
+  const router = useRouter();
 
   const handleLogin = async () => {
     try {
       const { user } = await login(userName, password, rememberMe);
       Alert.alert("Başarılı Giriş", `Hoş geldiniz, ${user.firstName}`);
-      router.replace("/"); // Login sonrası ana sayfaya yönlendirme
+      router.replace("/"); // Login sonrası yönlendirme
     } catch (error) {
       Alert.alert("Giriş Hatası", error.message);
     }

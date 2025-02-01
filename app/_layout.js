@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, ActivityIndicator } from "react-native";
 import { Slot, useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Header from "./components/Header";
 import Navbar from "./components/Navbar";
+import LoginScreen from "./login/index";
 import { useTheme, ThemeProvider } from "./utils/themeContext";
 import { HomeScrollProvider } from "./utils/homeScrollContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import Login from "./login/index";
 
 export default function Layout() {
   return (
@@ -23,6 +23,7 @@ function ThemedLayout() {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(null);
 
+  // Kullanıcı oturum kontrolü
   useEffect(() => {
     const checkAuth = async () => {
       const token = await AsyncStorage.getItem("userToken");
@@ -34,7 +35,7 @@ function ThemedLayout() {
 
   const styles = createStyles(theme);
 
-  // Kullanıcı durumu belli olana kadar yükleme ekranı göster
+  // Yükleme ekranı (isAuthenticated durumu henüz belli değil)
   if (isAuthenticated === null) {
     return (
       <View style={styles.loadingContainer}>
@@ -45,10 +46,10 @@ function ThemedLayout() {
 
   // Kullanıcı giriş yapmamışsa Login ekranını göster
   if (!isAuthenticated) {
-    return <Login />;
+    return <LoginScreen />;
   }
 
-  // Kullanıcı giriş yaptıysa ana uygulama ekranını göster
+  // Kullanıcı giriş yaptıysa uygulama ekranını göster
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -72,7 +73,7 @@ const createStyles = (theme) =>
     },
     header: {
       height: 60,
-      backgroundColor: theme.backgroundLight,
+      backgroundColor: theme.accentLight,
     },
     content: {
       flex: 1,
@@ -80,7 +81,7 @@ const createStyles = (theme) =>
     },
     navbar: {
       height: 60,
-      backgroundColor: theme.backgroundLight,
+      backgroundColor: theme.accentDark,
     },
     loadingContainer: {
       flex: 1,
