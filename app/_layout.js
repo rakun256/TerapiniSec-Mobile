@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import { useTheme, ThemeProvider } from "./utils/themeContext";
 import { HomeScrollProvider } from "./utils/homeScrollContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Login from "./login/index";
 
 export default function Layout() {
   return (
@@ -61,7 +62,7 @@ function ThemedLayout() {
         </>
       )}
       <View style={styles.content}>
-        <Slot />
+        <Login />
       </View>
     </View>
   );
