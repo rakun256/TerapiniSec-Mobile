@@ -4,7 +4,6 @@ import { Slot, useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Header from "./components/Header";
 import Navbar from "./components/Navbar";
-import LoginScreen from "./login/index";
 import { useTheme, ThemeProvider } from "./utils/themeContext";
 import { HomeScrollProvider } from "./utils/homeScrollContext";
 
@@ -34,7 +33,6 @@ function ThemedLayout() {
 
   const styles = createStyles(theme);
 
-  // Yükleme ekranı (isAuthenticated durumu henüz belli değil)
   if (isAuthenticated === null) {
     return (
       <View style={styles.loadingContainer}>
@@ -45,22 +43,20 @@ function ThemedLayout() {
 
   return (
     <View style={styles.container}>
-      {/* Header ve Navbar sadece giriş yapmış kullanıcılar için görünür */}
-      {isAuthenticated ? (
+      {isAuthenticated && (
         <>
           <View style={styles.header}>
             <Header />
-          </View>
-          <View style={styles.content}>
-            <Slot />
           </View>
           <View style={styles.navbar}>
             <Navbar />
           </View>
         </>
-      ) : (
-        <LoginScreen />
       )}
+
+      <View style={styles.content}>
+        <Slot />
+      </View>
     </View>
   );
 }
