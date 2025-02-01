@@ -20,42 +20,42 @@ export default function Layout() {
 function ThemedLayout() {
   const { theme } = useTheme();
   const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(true);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const checkAuth = async () => {
       const token = await AsyncStorage.getItem("userToken");
       setIsAuthenticated(!!token);
+      setIsLoading(false);
     };
 
     checkAuth();
   }, []);
 
-  const styles = createStyles(theme);
-
-  if (isAuthenticated === null) {
+  if (isLoading) {
     return (
-      <View style={styles.loadingContainer}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <ActivityIndicator size="large" color={theme.accentDark} />
       </View>
     );
   }
 
-  return (
-    <View style={styles.container}>
-      {isAuthenticated && (
-        <>
-          <View style={styles.header}>
-            <Header />
-          </View>
-          <View style={styles.navbar}>
-            <Navbar />
-          </View>
-        </>
-      )}
+  if (!isAuthenticated) {
+    router.replace("/login");
+    return null; 
+  }
 
-      <View style={styles.content}>
+  return (
+    <View style={{ flex: 1, backgroundColor: theme.backgroundLight }}>
+      <View style={{ height: 60, backgroundColor: theme.accentLight }}>
+        <Header />
+      </View>
+      <View style={{ flex: 1 }}>
         <Slot />
+      </View>
+      <View style={{ height: 60, backgroundColor: theme.accentDark }}>
+        <Navbar />
       </View>
     </View>
   );
