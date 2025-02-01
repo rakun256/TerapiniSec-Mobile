@@ -25,10 +25,10 @@ function ThemedLayout() {
   useEffect(() => {
     const checkAuth = async () => {
       const token = await AsyncStorage.getItem("userToken");
-      setIsAuthenticated(!!token);
+      setIsAuthenticated(!!token); // State güncellemesi yapılır
 
       if (!token) {
-        setTimeout(() => router.replace("/login"), 0);
+        router.replace("/login"); // State güncellemesinden sonra yönlendirme yapılır
       }
     };
 
@@ -47,19 +47,12 @@ function ThemedLayout() {
 
   return (
     <View style={styles.container}>
-      {isAuthenticated && (
-        <>
-          <View style={styles.header}>
-            <Header />
-          </View>
-          <View style={styles.navbar}>
-            <Navbar />
-          </View>
-        </>
-      )}
+      {/* Slot her zaman render ediliyor, Header ve Navbar görünürlüğü kontrol ediliyor */}
+      <View style={styles.header}>{isAuthenticated && <Header />}</View>
       <View style={styles.content}>
         <Slot />
       </View>
+      <View style={styles.navbar}>{isAuthenticated && <Navbar />}</View>
     </View>
   );
 }

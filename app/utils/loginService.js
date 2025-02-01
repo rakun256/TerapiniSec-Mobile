@@ -12,9 +12,8 @@ export const login = async (userName, password, rememberMe) => {
 
   const token = `mock-jwt-token-${user.id}`;
 
-  if (rememberMe) {
-    await AsyncStorage.setItem("userToken", token);
-  }
+  // Token her durumda kaydediliyor
+  await AsyncStorage.setItem("userToken", token);
 
   return { user, token };
 };

@@ -74,38 +74,38 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    padding: 16
+    padding: 16,
   },
   title: {
     fontWeight: "bold",
     textAlign: "center",
-    marginBottom: 20
+    marginBottom: 20,
   },
   input: {
     height: 40,
     borderWidth: 1,
     borderRadius: 8,
     marginBottom: 15,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   switchContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 20
+    marginBottom: 20,
   },
   label: {
-    fontWeight: "500"
+    fontWeight: "500",
   },
   button: {
     height: 45,
     borderRadius: 8,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   buttonText: {
-    fontWeight: "bold"
-  }
+    fontWeight: "bold",
+  },
 });
 
 export default LoginScreen;
