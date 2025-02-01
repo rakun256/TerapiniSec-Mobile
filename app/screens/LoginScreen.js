@@ -3,49 +3,67 @@ import {
   View,
   Text,
   TextInput,
-  Button,
+  TouchableOpacity,
   Switch,
   Alert,
   StyleSheet
 } from "react-native";
 import { login } from "../utils/loginService";
+import { useTheme } from "../utils/themeContext";
 
 const LoginScreen = ({ navigation }) => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
+  const { theme, headerFontSize, bodyFontSize } = useTheme();
+
   const handleLogin = async () => {
     try {
       const { user } = await login(userName, password, rememberMe);
       Alert.alert("Başarılı Giriş", `Hoş geldiniz, ${user.firstName}`);
-      navigation.navigate("HomeScreen"); // Giriş sonrası ana ekrana yönlendirme
+      navigation.navigate("HomeScreen");
     } catch (error) {
       Alert.alert("Giriş Hatası", error.message);
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Giriş Yap</Text>
+    <View style={[styles.container, { backgroundColor: theme.backgroundLight }]}>
+      <Text style={[styles.title, { fontSize: headerFontSize, color: theme.textDark }]}>
+        Giriş Yap
+      </Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, { color: theme.textDark, borderColor: theme.accentDark }]}
         placeholder="Kullanıcı Adı"
+        placeholderTextColor={theme.textLight}
         value={userName}
         onChangeText={setUserName}
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, { color: theme.textDark, borderColor: theme.accentDark }]}
         placeholder="Şifre"
+        placeholderTextColor={theme.textLight}
         secureTextEntry
         value={password}
         onChangeText={setPassword}
       />
       <View style={styles.switchContainer}>
-        <Text>Beni Hatırla</Text>
-        <Switch value={rememberMe} onValueChange={setRememberMe} />
+        <Text style={[styles.label, { fontSize: bodyFontSize, color: theme.textDark }]}>
+          Beni Hatırla
+        </Text>
+        <Switch
+          value={rememberMe}
+          onValueChange={setRememberMe}
+          thumbColor={theme.accentDark}
+          trackColor={{ false: theme.accentLight, true: theme.accentDark }}
+        />
       </View>
-      <Button title="Giriş Yap" onPress={handleLogin} />
+      <TouchableOpacity style={[styles.button, { backgroundColor: theme.accentDark }]} onPress={handleLogin}>
+        <Text style={[styles.buttonText, { fontSize: bodyFontSize, color: theme.textDark }]}>
+          Giriş Yap
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -57,17 +75,15 @@ const styles = StyleSheet.create({
     padding: 16
   },
   title: {
-    fontSize: 24,
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 20
   },
   input: {
     height: 40,
-    borderColor: "#ccc",
     borderWidth: 1,
-    borderRadius: 5,
-    marginBottom: 10,
+    borderRadius: 8,
+    marginBottom: 15,
     paddingHorizontal: 10
   },
   switchContainer: {
@@ -75,6 +91,18 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 20
+  },
+  label: {
+    fontWeight: "500"
+  },
+  button: {
+    height: 45,
+    borderRadius: 8,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  buttonText: {
+    fontWeight: "bold"
   }
 });
 
