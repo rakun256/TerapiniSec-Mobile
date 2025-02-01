@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, ActivityIndicator } from "react-native";
-import { Slot, useRouter } from "expo-router"; // Router eklendi
+import { Slot, useRouter } from "expo-router"; 
 import Header from "./components/Header";
 import Navbar from "./components/Navbar";
 import { useTheme, ThemeProvider } from "./utils/themeContext";
@@ -24,12 +24,11 @@ function ThemedLayout() {
 
   useEffect(() => {
     const checkAuth = async () => {
-      // AsyncStorage'dan token kontrolü yapılıyor
       const token = await AsyncStorage.getItem("userToken");
       setIsAuthenticated(!!token);
 
       if (!token) {
-        router.replace("/login"); // Giriş yapılmamışsa login ekranına yönlendir
+        router.replace("/login"); 
       }
     };
 
@@ -37,7 +36,6 @@ function ThemedLayout() {
   }, []);
 
   if (isAuthenticated === null) {
-    // Uygulama yüklenirken bekleme göstergesi
     return (
       <View style={[styles.loadingContainer, { backgroundColor: theme.backgroundLight }]}>
         <ActivityIndicator size="large" color={theme.accentDark} />
