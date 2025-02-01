@@ -27,10 +27,6 @@ function ThemedLayout() {
     const checkAuth = async () => {
       const token = await AsyncStorage.getItem("userToken");
       setIsAuthenticated(!!token);
-
-      if (!token) {
-        router.replace("/login");
-      }
     };
 
     checkAuth();
@@ -38,6 +34,7 @@ function ThemedLayout() {
 
   const styles = createStyles(theme);
 
+  // Kullanıcı durumu belli olana kadar yükleme ekranı göster
   if (isAuthenticated === null) {
     return (
       <View style={styles.loadingContainer}>
@@ -46,23 +43,22 @@ function ThemedLayout() {
     );
   }
 
+  // Kullanıcı giriş yapmamışsa Login ekranını göster
+  if (!isAuthenticated) {
+    return <Login />;
+  }
+
+  // Kullanıcı giriş yaptıysa ana uygulama ekranını göster
   return (
     <View style={styles.container}>
-      {isAuthenticated && (
-        <>
-          <View style={styles.header}>
-            <Header />
-          </View>
-          <View style={styles.content}>
-            <Slot />
-          </View>
-          <View style={styles.navbar}>
-            <Navbar />
-          </View>
-        </>
-      )}
+      <View style={styles.header}>
+        <Header />
+      </View>
       <View style={styles.content}>
-        <Login />
+        <Slot />
+      </View>
+      <View style={styles.navbar}>
+        <Navbar />
       </View>
     </View>
   );
@@ -77,7 +73,6 @@ const createStyles = (theme) =>
     header: {
       height: 60,
       backgroundColor: theme.backgroundLight,
-      zIndex: 1,
     },
     content: {
       flex: 1,
@@ -86,7 +81,6 @@ const createStyles = (theme) =>
     navbar: {
       height: 60,
       backgroundColor: theme.backgroundLight,
-      zIndex: 1,
     },
     loadingContainer: {
       flex: 1,
