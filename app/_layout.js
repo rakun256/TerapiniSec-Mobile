@@ -26,14 +26,16 @@ function ThemedLayout() {
     const checkAuth = async () => {
       const token = await AsyncStorage.getItem("userToken");
       setIsAuthenticated(!!token);
-
+  
       if (!token) {
-        router.replace("/login");
+        setTimeout(() => {
+          router.replace("/login");
+        }, 0); 
       }
     };
-
+  
     checkAuth();
-  }, []);
+  }, []);  
 
   const styles = createStyles(theme);
 
