@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -6,8 +6,11 @@ import {
   Switch,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from "react-native";
 import { useTheme } from "../utils/themeContext";
+import { useRouter } from "expo-router";
+import { logout } from "../utils/loginService";
 
 export default function SettingsScreen() {
   const {
@@ -19,6 +22,8 @@ export default function SettingsScreen() {
     updateHeaderFontSize,
     updateBodyFontSize,
   } = useTheme();
+
+  const router = useRouter();
 
   const increaseHeaderFontSize = () => {
     if (headerFontSize < 36) updateHeaderFontSize(headerFontSize + 2);
@@ -34,6 +39,16 @@ export default function SettingsScreen() {
 
   const decreaseBodyFontSize = () => {
     if (bodyFontSize > 12) updateBodyFontSize(bodyFontSize - 2);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout(); // Kullanıcı oturumunu sonlandır
+      Alert.alert("Çıkış Yapıldı", "Başarıyla çıkış yaptınız.");
+      router.replace("/login"); // Login ekranına yönlendirme
+    } catch (error) {
+      Alert.alert("Çıkış Hatası", error.message);
+    }
   };
 
   return (
@@ -171,6 +186,18 @@ export default function SettingsScreen() {
           </TouchableOpacity>
         </View>
       </View>
+
+      {/* Çıkış Yap Butonu */}
+      <View style={styles.section}>
+        <TouchableOpacity
+          style={[styles.logoutButton, { backgroundColor: theme.accentDark }]}
+          onPress={handleLogout}
+        >
+          <Text style={[styles.logoutButtonText, { color: theme.textLight }]}>
+            Çıkış Yap
+          </Text>
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 }
@@ -209,5 +236,16 @@ const styles = StyleSheet.create({
   fontSizeValue: {
     fontSize: 18,
     fontWeight: "bold",
+  },
+  logoutButton: {
+    padding: 15,
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
+  },
+  logoutButtonText: {
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });
